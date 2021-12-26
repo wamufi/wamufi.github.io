@@ -1,0 +1,19 @@
+I"<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">UIImage</span> <span class="p">{</span>
+    <span class="c1">/// 섬네일 만들기</span>
+    <span class="kd">func</span> <span class="nf">createImageThumbnail</span><span class="p">(</span><span class="n">imageViewWidth</span> <span class="nv">width</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">imageData</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">pngData</span><span class="p">()</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+        
+        <span class="k">let</span> <span class="nv">options</span> <span class="o">=</span> <span class="p">[</span><span class="nv">kCGImageSourceCreateThumbnailWithTransform</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">kCGImageSourceCreateThumbnailFromImageAlways</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">kCGImageSourceThumbnailMaxPixelSize</span><span class="p">:</span> <span class="n">width</span><span class="p">]</span> <span class="k">as</span> <span class="kt">CFDictionary</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">source</span> <span class="o">=</span> <span class="kt">CGImageSourceCreateWithData</span><span class="p">(</span><span class="n">imageData</span> <span class="k">as</span> <span class="kt">CFData</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">imageReference</span> <span class="o">=</span> <span class="kt">CGImageSourceCreateThumbnailAtIndex</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">cgImage</span><span class="p">:</span> <span class="n">imageReference</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>아래와 같은 코드로 사용하면 된다.</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">imageView</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="nf">createImageThumbnail</span><span class="p">(</span><span class="nv">imageViewWidth</span><span class="p">:</span> <span class="n">imageView</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

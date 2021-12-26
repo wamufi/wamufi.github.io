@@ -1,0 +1,14 @@
+I"<p>```swift
+public extension UIImage {
+    /// 섬네일 만들기
+    func createImageThumbnail(imageViewWidth width: CGFloat) -&gt; UIImage? {
+        guard let imageData = self.pngData() else { return nil }</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    let options = [kCGImageSourceCreateThumbnailWithTransform: true, kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceThumbnailMaxPixelSize: width] as CFDictionary
+    guard let source = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
+    guard let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options) else { return nil }
+    
+    return UIImage(cgImage: imageReference)
+} }
+</code></pre></div></div>
+:ET

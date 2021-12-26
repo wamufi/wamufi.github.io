@@ -1,0 +1,23 @@
+I";<p>동영상 id로 주로 돌리는 것 같아 가져와서 처리.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">String</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">youtubeID</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">pattern</span> <span class="o">=</span> <span class="s">"((?&lt;=(v|V)/)|(?&lt;=be/)|(?&lt;=(</span><span class="se">\\</span><span class="s">?|</span><span class="se">\\</span><span class="s">&amp;)v=)|(?&lt;=embed/))([</span><span class="se">\\</span><span class="s">w-]++)"</span>
+
+        <span class="k">let</span> <span class="nv">regex</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="kt">NSRegularExpression</span><span class="p">(</span><span class="nv">pattern</span><span class="p">:</span> <span class="n">pattern</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="o">.</span><span class="n">caseInsensitive</span><span class="p">)</span>
+        <span class="k">let</span> <span class="nv">range</span> <span class="o">=</span> <span class="kt">NSRange</span><span class="p">(</span><span class="nv">location</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="n">count</span><span class="p">)</span>
+
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">regex</span><span class="p">?</span><span class="o">.</span><span class="nf">firstMatch</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span> <span class="nv">range</span><span class="p">:</span> <span class="n">range</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">self</span>
+        <span class="p">}</span>
+
+        <span class="nf">return</span> <span class="p">(</span><span class="k">self</span> <span class="k">as</span> <span class="kt">NSString</span><span class="p">)</span><span class="o">.</span><span class="nf">substring</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">id</span> <span class="o">=</span> <span class="s">"https://www.youtube.com/watch?v=MO7Ta0DvEWA"</span><span class="o">.</span><span class="n">youtubeID</span>
+</code></pre></div></div>
+<p>결과값은 <code class="language-plaintext highlighter-rouge">MO7Ta0DvEWA</code></p>
+
+:ET

@@ -1,0 +1,16 @@
+---
+layout: post
+title: "\\n을 띄어쓰기로 변경"
+date: "2020-12-02 17:23:00 +0900"
+tags: [iOS, Swift, String]
+---
+```swift
+var jimmy = "Jimmy won\'t you\nplease come home?\nThe grass is green\nand the buffaloes roam"
+while let rangeToReplace = jimmy.range(of: "\n") {
+    jimmy.replaceSubrange(rangeToReplace, with: " ")
+}
+print("\(jimmy)")
+```
+출력값은 `Jimmy won't you please come home? The grass is green and the buffaloes roam`
+
+변수 `jimmy`에서 개행문자 `\n`을 찾아 `replaceSubrange(_:with:)`로 띄어쓰기로 변환을 반복

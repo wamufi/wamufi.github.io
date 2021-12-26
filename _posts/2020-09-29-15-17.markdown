@@ -1,0 +1,26 @@
+---
+layout: post
+title: "이미지 섬네일 만들기"
+date: "2020-09-29 15:17:00 +0900"
+tags: [iOS, Swift, UIImage]
+---
+```swift
+public extension UIImage {
+    /// 섬네일 만들기
+    func createImageThumbnail(imageViewWidth width: CGFloat) -> UIImage? {
+        guard let imageData = self.pngData() else { return nil }
+        
+        let options = [kCGImageSourceCreateThumbnailWithTransform: true, kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceThumbnailMaxPixelSize: width] as CFDictionary
+        guard let source = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
+        guard let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options) else { return nil }
+        
+        return UIImage(cgImage: imageReference)
+    }
+}
+
+```
+
+아래와 같은 코드로 사용하면 된다.
+```swift
+imageView.image = image.createImageThumbnail(imageViewWidth: imageView.frame.size.width)
+```

@@ -1,0 +1,10 @@
+I"@<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span> <span class="nv">jimmy</span> <span class="o">=</span> <span class="s">"Jimmy won</span><span class="se">\'</span><span class="s">t you</span><span class="se">\n</span><span class="s">please come home?</span><span class="se">\n</span><span class="s">The grass is green</span><span class="se">\n</span><span class="s">and the buffaloes roam"</span>
+<span class="k">while</span> <span class="k">let</span> <span class="nv">rangeToReplace</span> <span class="o">=</span> <span class="n">jimmy</span><span class="o">.</span><span class="nf">range</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">jimmy</span><span class="o">.</span><span class="nf">replaceSubrange</span><span class="p">(</span><span class="n">rangeToReplace</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="s">" "</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">jimmy</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+<p>출력값은 <code class="language-plaintext highlighter-rouge">Jimmy won't you please come home? The grass is green and the buffaloes roam</code></p>
+
+<p>변수 <code class="language-plaintext highlighter-rouge">jimmy</code>에서 개행문자 <code class="language-plaintext highlighter-rouge">\n</code>을 찾아 <code class="language-plaintext highlighter-rouge">replaceSubrange(_:with:)</code>로 띄어쓰기로 변환을 반복</p>
+:ET
