@@ -1,0 +1,50 @@
+I"�<p><img src="/assets/images/Simulator Screen Recording - iPhone 13 mini - 2022-01-02 at 19.30.33.gif" alt="" />\n
+위와 같이 누르면 확장되는 UITableViewCell 이다.</p>
+
+<p>우선 스토리보드에서
+<img src="/assets/images/Screen Shot 2022-01-02 at 18.46.22.png" alt="" />
+<img src="/assets/images/Screen Shot 2022-01-02 at 19.31.14.png" alt="" />\n
+접혀 있을 때도 보여줄 셀의 높이를 지정하자. 여기서는 프레임 너비의 /4.5로 지정했다.</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">expandedIndexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">?</span>
+
+    <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+        
+        <span class="n">tableView</span><span class="o">.</span><span class="n">estimatedRowHeight</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mf">4.5</span> <span class="c1">// 접혀져 있을 때의 높이</span>
+        <span class="n">tableView</span><span class="o">.</span><span class="n">rowHeight</span> <span class="o">=</span> <span class="kt">UITableView</span><span class="o">.</span><span class="n">automaticDimension</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UITableViewDelegate</span><span class="p">,</span> <span class="kt">UITableViewDataSource</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">heightForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">indexPath</span> <span class="o">==</span> <span class="n">expandedIndexPath</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kt">UITableView</span><span class="o">.</span><span class="n">automaticDimension</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mf">4.5</span> <span class="c1">// 접혀져 있을 때의 높이</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">didSelectRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tableView</span><span class="o">.</span><span class="nf">deselectRow</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="n">indexPath</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+        
+        <span class="n">tableView</span><span class="o">.</span><span class="nf">beginUpdates</span><span class="p">()</span>
+        
+        <span class="k">let</span> <span class="nv">cell</span> <span class="o">=</span> <span class="n">tableView</span><span class="o">.</span><span class="nf">cellForRow</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="n">indexPath</span><span class="p">)</span> <span class="k">as!</span> <span class="kt">FirstTableViewCell</span>
+        
+        <span class="k">if</span> <span class="n">indexPath</span> <span class="o">==</span> <span class="n">expandedIndexPath</span> <span class="p">{</span> <span class="c1">// 펼쳐진 상태에서 클릭 -&gt; 닫힘</span>
+            <span class="n">expandedIndexPath</span> <span class="o">=</span> <span class="kc">nil</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">expandedView</span><span class="o">.</span><span class="n">isHidden</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// 닫혀진 상태에서 클릭 -&gt; 펼침</span>
+            <span class="n">expandedIndexPath</span> <span class="o">=</span> <span class="n">indexPath</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">expandedView</span><span class="o">.</span><span class="n">isHidden</span> <span class="o">=</span> <span class="kc">false</span>
+        <span class="p">}</span>
+        
+        <span class="n">tableView</span><span class="o">.</span><span class="nf">layoutIfNeeded</span><span class="p">()</span>
+        <span class="n">tableView</span><span class="o">.</span><span class="nf">endUpdates</span><span class="p">()</span>
+        <span class="n">tableView</span><span class="o">.</span><span class="nf">layoutIfNeeded</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+:ET

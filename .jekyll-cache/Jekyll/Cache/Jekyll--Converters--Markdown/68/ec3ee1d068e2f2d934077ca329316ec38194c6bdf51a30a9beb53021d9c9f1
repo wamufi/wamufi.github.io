@@ -1,0 +1,4 @@
+I"d<p>```swift
+class ViewController: UIViewController {
+    var expandedIndexPath: IndexPath?</p>
+:ET

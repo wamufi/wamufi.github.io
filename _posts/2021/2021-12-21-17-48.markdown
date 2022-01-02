@@ -1,0 +1,59 @@
+---
+layout: post
+title: "선택하면 확장되는 UITableViewCell"
+date: "2021-12-21 17:48:00 +0900"
+tags: [iOS, Swift, UITableView, UITableViewCell]
+---
+![](/assets/images/Simulator Screen Recording - iPhone 13 mini - 2022-01-02 at 19.30.33.gif)
+
+위와 같이 누르면 확장되는 UITableViewCell 이다.
+
+우선 스토리보드에서
+
+![](/assets/images/Screen Shot 2022-01-02 at 19.31.14.png)
+![](/assets/images/Screen Shot 2022-01-02 at 18.46.22.png)
+
+접혀 있을 때도 보여줄 셀의 높이를 지정하자. 여기서는 프레임 너비의 /4.5로 지정했다.
+
+```swift
+class ViewController: UIViewController {
+    var expandedIndexPath: IndexPath?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.estimatedRowHeight = view.frame.width / 4.5 // 접혀져 있을 때의 높이
+        tableView.rowHeight = UITableView.automaticDimension
+    }
+}
+
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath == expandedIndexPath {
+            return UITableView.automaticDimension
+        } else {
+            return view.frame.width / 4.5 // 접혀져 있을 때의 높이
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        tableView.beginUpdates()
+        
+        let cell = tableView.cellForRow(at: indexPath) as! FirstTableViewCell
+        
+        if indexPath == expandedIndexPath { // 펼쳐진 상태에서 클릭 -> 닫힘
+            expandedIndexPath = nil
+            cell.expandedView.isHidden = true
+        } else { // 닫혀진 상태에서 클릭 -> 펼침
+            expandedIndexPath = indexPath
+            cell.expandedView.isHidden = false
+        }
+        
+        tableView.layoutIfNeeded()
+        tableView.endUpdates()
+        tableView.layoutIfNeeded()
+    }
+}
+```

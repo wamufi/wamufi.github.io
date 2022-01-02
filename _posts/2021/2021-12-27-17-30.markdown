@@ -1,0 +1,101 @@
+---
+layout: post
+title: "UIButton.Configuration과 iOS 15 미만 버전"
+date: "2021-12-27 17:30:00 +0900"
+tags: [iOS, Swift, UIButton]
+---
+Configuration은 iOS 15 이상부터 사용이 가능하다.
+https://developer.apple.com/documentation/uikit/uibutton/configuration
+
+앱은 13부터 지원하기로 했으니 iOS 15+ 에서는 Configuration을 사용하고 미만에서는 사용하지 않게 하기 위해 클래스를 생성해서 만들었다.
+
+```swift
+class ConfigurationButton: UIButton {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        
+        setupLayout()
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            if #available(iOS 15.0, *) {
+            } else {
+                updateViewForSelected()
+            }
+        }
+    }
+    
+    // MARK: - 그리기
+    private func setupLayout() {
+        addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
+        
+        if #available(iOS 15.0, *) {
+            setupConfiguration()
+            setNeedsUpdateConfiguration()
+        } else {
+            titleLabel?.font = .systemFont(ofSize: 14)
+//            titleLabel?.textAlignment = .center
+//            titleLabel?.lineBreakMode = .byWordWrapping
+            contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+            
+            setTitleColor(UIColor.secondaryLabel, for: .normal)
+            setTitleColor(UIColor(named: "AccentColor"), for: .selected)
+
+            updateViewForSelected()
+        }
+    }
+    
+    @available(iOS 15.0, *)
+    private func setupConfiguration() {
+        let title = titleLabel?.text
+        
+        configurationUpdateHandler = { button in
+            var config = button.configuration
+
+            switch button.state {
+            case .selected:
+                config = .filled()
+            case .normal:
+                config = .gray()
+            default:
+                config = .gray()
+            }
+            
+            config?.title = title
+            config?.cornerStyle = .medium
+
+            button.configuration = config
+        }
+    }
+    
+    private func updateViewForSelected() {
+        if isSelected {
+            titleLabel?.font = .boldSystemFont(ofSize: 16)
+        } else {
+            titleLabel?.font = .systemFont(ofSize: 16)
+        }
+        
+        titleLabel?.sizeToFit()
+    }
+    
+    // Touch Event
+    @objc func tappedButton(_ sender: UIButton) {
+        guard let superview = sender.superview else { return }
+
+        for subview in superview.subviews {
+            guard let button = subview as? UIButton else { return }
+            button.isSelected = false
+        }
+        
+        isSelected = true
+    }
+}
+```
